@@ -12,18 +12,9 @@ I have provided you here with an .eaf file. This file type is used in the applic
 
 Your task is to create a tool that takes, as input, an .eaf file (structured as in the example) and gives, as output, a .txt file (structured as in the example). The output file should appear next to the input file in the same directory by default, and with the same basename as the input file. You can accomplish this task in up to three ways:
 
-### Level 1: R script, hard-coded paths
+### Level 1: Command-line script, input path as argument
 
-Provide me with a single script/set of scripts in R in which:
-
-* I can define a path to an input .eaf file and then
-* Run the whole script to create the desired output file.
-
-_Why this level?_ Students and RAs in the lab who are just learning how to script are likely doing so in R, particularly in RStudio. Even if they're just beginning, they will probably know how to open, minorly edit, and run individual scripts, and so would be able to use this tool independently.
-
-### Level 2: Command-line script, input path as argument
-
-Provide me with a shell script and associated code for running this tool at the command line. Your tool should:
+Provide me with a program and associated code for running this tool at the command line. Your tool should:
 
 * Take an input path as an argument,
 * Provide usage info for the argument (and any flags you create), and
@@ -33,15 +24,28 @@ Note: Use R or Python, as you like.
 
 _Why this level?_ More advanced students and researchers who want to reuse our lab's open-source code are likely to be comfortable running scripts at the command line, often finding this more convenient than having to hand-edit a script in order to adjust it to their requirements.
 
-### Level 3: Shiny app, GUI upload/download
+### Level 2: Modify the code to produce output listed chronologically by chronological ordering and  `@` tiers below the main tiers.
 
-Provide me with an R [Shiny app](https://shiny.rstudio.com/) and associated code in which:
+* Modify your code to output the list by chronological ordering. The ordering should be based on the start and end times, in that order.
+* In addition, your code should output subtier lines (lines that start with lower case `vcm@`, `xds@` or `lex@`) below the main tier lines. For example: 
 
-* The user can upload one or more .eaf files via an upload button,
-* Click 'submit' once the file has uploaded, and then
-* Download the associated output file(s).
+```
+CHI	CHI	1740	2994	1254	0.
+vcm@CHI	CHI	1740	2994	1254	C
+lex@CHI	CHI	1740	2994	1254	0
 
-_Why this level?_ Everyone can use this tool, no matter their experience with programming, which makes it incredibly useful.
+```
+
+
+### Level 3:
+
+Modify your code to output a couple of summary data:
+
+* Which speaker had the most turns?
+* Which speaker talked the most (cumulatively)? 
+* Which speaker had the most **non-speaking** turns (where instead of any annotations, there is only `0.`)?
+
+
 
 ## Submission
 
@@ -49,7 +53,7 @@ Please share with me a GitHub repo in which you have stored your code. If you ar
 
 ## Evaluation
 
-I'm giving you multiple options for completing the task because the candidates for this position vary in their current programming skills and familiarity with R. The goal is not to test whether you can do all these things, but just to evaluate what your current comfort level is—do not feel compelled to do level 3 by default! Instead, choose the level that most suits your current skills and available time between now and Monday night. I will be looking at your code style, commenting, tests, edge case handling, README clarity, etc. Your task should run successfully and be tidily documented in line with your current best ability. Quality counts over quantity/level number.
+The goal is not to test whether you can do all these things, but just to evaluate what your current comfort level is—do not feel compelled to do level 3 by default! Instead, choose the level that most suits your current skills and available time between now and Monday night. I will be looking at your code style, commenting, tests, edge case handling, README clarity, etc. Your task should run successfully and be tidily documented in line with your current best ability. Quality counts over quantity/level number.
 
 Resourcefulness is a virtue! Feel free to use existing packages  that might make this task simpler. You may also find solutions posted for similar tasks—great! Just please clearly cite any code you re-use.
 
