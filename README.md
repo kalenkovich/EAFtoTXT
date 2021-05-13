@@ -24,7 +24,8 @@ Note: Use R or Python, as you like.
 
 _Why this level?_ More advanced students and researchers who want to reuse our lab's open-source code are likely to be comfortable running scripts at the command line, often finding this more convenient than having to hand-edit a script in order to adjust it to their requirements.
 
-### Level 2: Modify the code to produce output listed chronologically by chronological ordering and  `@` tiers below the main tiers.
+### Level 2: 
+Modify the code to produce output listed chronologically by chronological ordering and  `@` tiers below the main tiers.
 
 * Modify your code to output the list by chronological ordering. The ordering should be based on the start and end times, in that order.
 * In addition, your code should output subtier lines (lines that start with lower case `vcm@`, `xds@` or `lex@`) below the main tier lines. For example: 
