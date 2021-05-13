@@ -10,7 +10,7 @@ I have provided you here with an .eaf file. This file type is used in the applic
 
 ## Task summary
 
-Your task is to create a tool that takes, as input, an .eaf file (structured as in the example) and gives, as output, a .txt file (structured as in the example). The output file should appear next to the input file in the same directory by default, and with the same basename as the input file. You can accomplish this task in up to three ways:
+Your task is to create a tool that takes, as input, an .eaf file (structured as in the example) and gives, as output, a .txt file (structured as in the example). The output file should appear next to the input file in the same directory by default, and with the same basename as the input file.
 
 ### Level 1: Command-line script, input path as argument
 
@@ -25,7 +25,8 @@ Note: Use R or Python, as you like.
 _Why this level?_ More advanced students and researchers who want to reuse our lab's open-source code are likely to be comfortable running scripts at the command line, often finding this more convenient than having to hand-edit a script in order to adjust it to their requirements.
 
 ### Level 2: 
-Modify the code to produce output listed chronologically by chronological ordering and  `@` tiers below the main tiers.
+Modify the code to produce output listed chronologically by chronological ordering and  annotations for subtiers below their respective 
+main annotations.
 
 * Modify your code to output the list by chronological ordering. The ordering should be based on the start and end times, in that order.
 * In addition, your code should output subtier lines (lines that start with lower case `vcm@`, `xds@` or `lex@`) below the main tier lines. For example: 
@@ -40,22 +41,21 @@ lex@CHI	CHI	1740	2994	1254	0
 
 ### Level 3:
 
-Modify your code to output a couple of summary data:
+Modify your code to output a couple of summary data: 
 
 * Which speaker had the most turns?
 * Which speaker talked the most (cumulatively)? 
 * Which speaker had the most **non-speaking** turns (where instead of any annotations, there is only `0.`)?
 
 
-
 ## Submission
 
-Please share with me a GitHub repo in which you have stored your code. If you are doing level 3, you can either just have me run the app myself locally using `shiny::runApp()` or you can host it and send me a URL (up to you). Indicate in the README of your repo which level you have aimed at. I have a collection of other files similar to the example one that I will use to test your tool. I'm on a Mac so whatever you do to mitigate my needing to install things/change paths (e.g., from back- to forward-slash) is appreciated :)
+Please share with me a GitHub repo in which you have stored your code. I will be looking at your code style, commenting, tests, edge case 
+handling, README clarity, etc. Your task should run successfully and be tidily documented in line with your current best ability. If you
+have the time, add tests for extra points (no test input included, so might need to create test files from the sample given). 
 
-## Evaluation
+Resourcefulness is a virtue! Feel free to use existing packages  that might make this task simpler. You may also find solutions posted for
+similar tasks—great! Just please clearly cite any code you re-use.
 
-The goal is not to test whether you can do all these things, but just to evaluate what your current comfort level is—do not feel compelled to do level 3 by default! Instead, choose the level that most suits your current skills and available time between now and Monday night. I will be looking at your code style, commenting, tests, edge case handling, README clarity, etc. Your task should run successfully and be tidily documented in line with your current best ability. Quality counts over quantity/level number.
-
-Resourcefulness is a virtue! Feel free to use existing packages  that might make this task simpler. You may also find solutions posted for similar tasks—great! Just please clearly cite any code you re-use.
-
-Last but not least, I'd appreciate it if you kept your full revision history for this project in the Github repo. I won't go snooping deep into your history so don't be bashful. I just want to get a sense for how you chunk your commits and what your messages are like.
+Last but not least, I'd appreciate it if you kept your full revision history for this project in the Github repo. I won't go snooping deep
+into your history so don't be bashful. I just want to get a sense for how you chunk your commits and what your messages are like.
