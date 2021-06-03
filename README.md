@@ -1,6 +1,6 @@
 # Background
 
-A big part of the lab manager's job will be to write scripts that facilitate data collection, annotation, and analysis. This technical task is meant to give you an idea of the type of work involved in prepping data for analysis.
+A big part of the research technician's job will be to write scripts that facilitate data collection, annotation, and analysis. This technical task is meant to give you an idea of the type of work involved in prepping data for analysis.
 
 When RAs manually annotate data in the lab, they may use one of several applications, depending on the type of data (e.g., Excel/Google Spreadsheets, Praat, ELAN, Datavyu, etc.). When it comes to doing analysis, however, we need to get their annotations into a text-based tabular format. Usually this can be done by hand within each application (e.g., via some specialized export function) but it's often much quicker and less error-prone to do this re-formatting automatically.
 
@@ -46,6 +46,16 @@ Modify your code to output a couple of summary data:
 * Which speaker had the most turns?
 * Which speaker talked the most (cumulatively)? 
 * Which speaker had the most **non-speaking** turns (where instead of any annotations, there is only `0.`)?
+
+### Level 4:
+
+Turns out, we would like to keep track of each annotation in the eaf! Create a database (e.g. sqlite) and an appropriate scheme to track annotations such that we can uniquely identify
+each annotation. To be more specific, whenever someone uses your script from the previous levels, the script should, in addition to the previous tasks, register each annotation in the 
+database. Ideally, we would like to be able to query this database for useful information, so write a few examples (e.g. query all annotations above a certain duration from a specific 
+file.). This task is intentionally somewhat vague: we are more interested in your general thought process at arriving a solution and attention to detail in a solid implementation than 
+an exact answer to a simple problem. It's ok to make assumptions, but do provide your reasoning. As a simple example of solid implementation, your script should absolutely be able to 
+handle being run on the same file twice. Feel free to use any technologies you are familiar with, but sqlite is suggested since it might be easier to work with. There are two eaf files, 
+but feel free to find/generate your own examples!
 
 
 ## Submission
