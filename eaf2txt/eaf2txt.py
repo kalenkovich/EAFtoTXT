@@ -20,7 +20,6 @@ def _parse_annotation(annotation: ElementTree.Element, tier: ElementTree.Element
     child = annotation.find('ALIGNABLE_ANNOTATION') or annotation.find('REF_ANNOTATION')
     if child.tag == 'ALIGNABLE_ANNOTATION':
         parsed = dict(
-            annotation_id=child.get('ANNOTATION_ID'),
             time_slot_ref_1=child.get('TIME_SLOT_REF1'),
             time_slot_ref_2=child.get('TIME_SLOT_REF2'))
     elif child.tag == 'REF_ANNOTATION':
@@ -29,6 +28,7 @@ def _parse_annotation(annotation: ElementTree.Element, tier: ElementTree.Element
         )
 
     parsed.update(
+        annotation_id=child.get('ANNOTATION_ID'),
         participant=tier.get('PARTICIPANT'),
         tier_id=tier.get('TIER_ID'),
         value=child.find('ANNOTATION_VALUE').text
