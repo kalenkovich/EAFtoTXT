@@ -104,14 +104,23 @@ def convert_eaf_to_data_frame(eaf_path: (str, Path)) -> pd.DataFrame:
     return annotations[['tier_id', 'participant', 'start', 'end', 'duration', 'value']]
 
 
-def convert_eaf_to_txt(eaf_path: (str, Path)) -> Path:
+def convert_eaf_to_txt(eaf_path: (str, Path), order=True) -> Path:
     """
     Converts eaf file to a tab-delimited file with ".txt" extension and no column names.
     Columns extracted: 'tier_id', 'participant', 'start', 'end', 'duration', 'value'
+    :param order: order annotations chronolagically, list subtier annotations below the parent tier
     :param eaf_path: path to the EAF file
     :return: path to the txt file
     """
     annotations_df = convert_eaf_to_data_frame(eaf_path)
+
+    if order:
+        annotations_df = (annotations_df
+            .assign(is_subtier=annotations_df.tier_id.str.contains('@'))
+            .sort_values(by=['start', 'end', 'is_subtier', 'tier_id'])
+            .drop(columns=['is_subtier'])
+            .reset_index(drop=True))
+
     output_path = eaf_path.with_suffix('.txt')
     annotations_df.to_csv(output_path,
                           sep='\t',
