@@ -5,7 +5,9 @@ The output is written to a file with the same name but with '.txt' extension in 
 
 ## Installation
 
+```sh
 pip install git+https://github.com/kalenkovich/EAFtoTXT.git
+```
 
 ## Usage
 
