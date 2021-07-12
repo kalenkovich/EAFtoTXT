@@ -104,10 +104,38 @@ def convert_eaf_to_data_frame(eaf_path: (str, Path)) -> pd.DataFrame:
     return annotations[['tier_id', 'participant', 'start', 'end', 'duration', 'value']]
 
 
-def convert_eaf_to_txt(eaf_path: (str, Path), order=True) -> Path:
+def _print_summary(annotations_df: pd.DataFrame) -> None:
+    """
+    Outputs a couple of summary data:
+    - Which speaker had the most turns (speaking and non-speaking)?
+    - Which speaker talked the most (cumulative duration of the speaking turns)?
+    - Which speaker had the most non-speaking turns (where instead of any annotations, there is only 0.)?
+    :param annotations_df: the annotations dataframe extracted from en eaf file
+    """
+    per_participant_summary = (annotations_df
+                               [~annotations_df.tier_id.str.contains('@')]
+                               .assign(non_speaking_turn=(annotations_df.value == '0.'),
+                                       speaking_duration=annotations_df.duration.where(annotations_df.value != '0.', 0))
+                               .groupby(['participant'])
+                               .agg({'value': 'count',
+                                     'speaking_duration': 'sum',
+                                     'non_speaking_turn': 'count'})
+                               .rename(
+                                   columns={'value': 'turn count',
+                                            'speaking_duration': 'total speaking duration',
+                                            'non_speaking_turn': 'non-speaking turn count'}))
+
+    for statistic in per_participant_summary:
+        max_participant = per_participant_summary[statistic].idxmax()
+        max_value = per_participant_summary[statistic].max()
+        print(f'Participant {max_participant} had the highest total {statistic}: {max_value}')
+
+
+def convert_eaf_to_txt(eaf_path: (str, Path), order=True, summary=False) -> Path:
     """
     Converts eaf file to a tab-delimited file with ".txt" extension and no column names.
     Columns extracted: 'tier_id', 'participant', 'start', 'end', 'duration', 'value'
+    :param summary: bool, should a short summary be printed out?
     :param order: order annotations chronolagically, list subtier annotations below the parent tier
     :param eaf_path: path to the EAF file
     :return: path to the txt file
@@ -120,6 +148,9 @@ def convert_eaf_to_txt(eaf_path: (str, Path), order=True) -> Path:
             .sort_values(by=['start', 'end', 'is_subtier', 'tier_id'])
             .drop(columns=['is_subtier'])
             .reset_index(drop=True))
+
+    if summary:
+        _print_summary(annotations_df)
 
     output_path = eaf_path.with_suffix('.txt')
     annotations_df.to_csv(output_path,
