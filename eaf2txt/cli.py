@@ -23,16 +23,17 @@ def main():
         path = Path(args.file)
         assert path.exists(), f'File {path} does not exist'
         assert path.is_file(), f'{path} is not a file'
-        print(f'Converting {path}')
-        convert_eaf_to_txt(path, summary=args.summary)
+        eaf_paths = [path]
 
     if args.directory:
         path = Path(args.directory)
         assert path.exists(), f'Directory {path} does not exist'
         assert path.is_dir(), f'{path} is not a directory'
-        for eaf_path in path.glob('*.eaf'):
-            print(f'Converting {eaf_path}')
-            convert_eaf_to_txt(eaf_path, summary=args.summary)
+        eaf_paths = path.glob('*.eaf')
+
+    for eaf_path in eaf_paths:
+        print(f'Converting {eaf_path}')
+        convert_eaf_to_txt(eaf_path, summary=args.summary)
 
 
 if __name__ == '__main__':
