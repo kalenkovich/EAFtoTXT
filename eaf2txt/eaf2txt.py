@@ -105,4 +105,16 @@ def convert_eaf_to_data_frame(eaf_path: (str, Path)) -> pd.DataFrame:
 
 
 def convert_eaf_to_txt(eaf_path: (str, Path)) -> Path:
-    pass
+    """
+    Converts eaf file to a tab-delimited file with ".txt" extension and no column names.
+    Columns extracted: 'tier_id', 'participant', 'start', 'end', 'duration', 'value'
+    :param eaf_path: path to the EAF file
+    :return: path to the txt file
+    """
+    annotations_df = convert_eaf_to_data_frame(eaf_path)
+    output_path = eaf_path.with_suffix('.txt')
+    annotations_df.to_csv(output_path,
+                          sep='\t',
+                          index=False,
+                          header=False)
+    return output_path
