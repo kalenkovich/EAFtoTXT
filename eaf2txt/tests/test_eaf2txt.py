@@ -12,7 +12,13 @@ def test_convert_eaf_to_txt(tmp_path, request):
     eaf_copy = tmp_path / source_eaf.name
     copy(source_eaf, eaf_copy)
 
-    converted = convert_eaf_to_txt(eaf_path=eaf_copy)
+    converted = convert_eaf_to_txt(eaf_path=eaf_copy, order=False)
     assert isinstance(converted, os.PathLike)
     assert converted.exists()
     assert correct_txt.read_text() == converted.read_text()
+
+    converted = convert_eaf_to_txt(eaf_path=eaf_copy, order=True)
+    correct_ordered = correct_txt.with_stem(correct_txt.stem + '_ordered')
+    assert isinstance(converted, os.PathLike)
+    assert converted.exists()
+    assert correct_ordered.read_text() == converted.read_text()
