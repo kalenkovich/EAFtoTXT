@@ -62,5 +62,47 @@ def _parse_eaf(eaf_path: (str, Path)) -> (pd.DataFrame, pd.DataFrame):
     return times, annotations
 
 
+def convert_eaf_to_data_frame(eaf_path: (str, Path)) -> pd.DataFrame:
+    times, annotations = _parse_eaf(eaf_path)
+
+    # Get the times for aligned annotations
+    annotations = (annotations
+        .merge(
+        times.rename(columns=dict(time_value='start')),
+        left_on='time_slot_ref_1',
+        right_on='time_slot_id',
+        how='left')
+        .merge(
+        times.rename(columns=dict(time_value='end')),
+        left_on='time_slot_ref_2',
+        right_on='time_slot_id',
+        how='left'))
+
+    # Get the times for the reference annotations by finding an annotation whose id is the one in the `annotation_ref`
+    # column of the reference annotation. Some reference annotations refer to other reference annotations so we
+    # need to do it iteratively.
+
+
+    # The update methods aligns on indices
+    annotations.set_index('annotation_ref', inplace=True)
+    # Keep the number of annotations without times so that we stop when this number stops reducing.
+    na_count = annotations.start.isnull().sum()
+    na_count_new = 0
+    while na_count_new != na_count:
+        na_count = na_count_new
+        annotations.update(
+            annotations[['annotation_id', 'start', 'end']].dropna().set_index('annotation_id'))
+        na_count_new = annotations.start.isnull().sum()
+    annotations.reset_index(inplace=True)
+
+    # Covert times to ints, add duration
+    annotations['start'] = annotations.start.astype(int)
+    annotations['end'] = annotations.end.astype(int)
+    annotations['duration'] = annotations.end - annotations.start
+
+    # Return a subset of columns in the correct order
+    return annotations[['tier_id', 'participant', 'start', 'end', 'duration', 'value']]
+
+
 def convert_eaf_to_txt(eaf_path: (str, Path)) -> Path:
     pass
