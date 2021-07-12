@@ -1,5 +1,6 @@
 from pathlib import Path
 from shutil import copy
+import os
 
 from ..eaf2txt import convert_eaf_to_txt
 
@@ -12,6 +13,6 @@ def test_convert_eaf_to_txt(tmp_path, request):
     copy(source_eaf, eaf_copy)
 
     converted = convert_eaf_to_txt(eaf_path=eaf_copy)
-    assert type(converted) is Path
+    assert isinstance(converted, os.PathLike)
     assert converted.exists()
     assert correct_txt.read_text() == converted.read_text()
