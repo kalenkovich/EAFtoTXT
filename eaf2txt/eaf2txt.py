@@ -62,7 +62,13 @@ def _parse_eaf(eaf_path: (str, Path)) -> (pd.DataFrame, pd.DataFrame):
     return times, annotations
 
 
-def convert_eaf_to_data_frame(eaf_path: (str, Path)) -> pd.DataFrame:
+def convert_eaf_to_data_frame(eaf_path: (str, Path), order=True) -> pd.DataFrame:
+    """
+    Converts an EAF file to a pandas dataframe
+    :param eaf_path: path to the EAF file
+    :param order: order annotations chronolagically, list subtier annotations below the parent tier
+    :return:
+    """
     times, annotations = _parse_eaf(eaf_path)
 
     # Get the times for aligned annotations
@@ -99,6 +105,14 @@ def convert_eaf_to_data_frame(eaf_path: (str, Path)) -> pd.DataFrame:
     annotations['start'] = annotations.start.astype(int)
     annotations['end'] = annotations.end.astype(int)
     annotations['duration'] = annotations.end - annotations.start
+
+    # Order if required
+    if order:
+        annotations = (annotations
+            .assign(is_subtier=annotations.tier_id.str.contains('@'))
+            .sort_values(by=['start', 'end', 'is_subtier', 'tier_id'])
+            .drop(columns=['is_subtier'])
+            .reset_index(drop=True))
 
     # Return a subset of columns in the correct order
     return annotations[['tier_id', 'participant', 'start', 'end', 'duration', 'value']]
@@ -140,14 +154,7 @@ def convert_eaf_to_txt(eaf_path: (str, Path), order=True, summary=False) -> Path
     :param eaf_path: path to the EAF file
     :return: path to the txt file
     """
-    annotations_df = convert_eaf_to_data_frame(eaf_path)
-
-    if order:
-        annotations_df = (annotations_df
-            .assign(is_subtier=annotations_df.tier_id.str.contains('@'))
-            .sort_values(by=['start', 'end', 'is_subtier', 'tier_id'])
-            .drop(columns=['is_subtier'])
-            .reset_index(drop=True))
+    annotations_df = convert_eaf_to_data_frame(eaf_path, order=order)
 
     if summary:
         _print_summary(annotations_df)
