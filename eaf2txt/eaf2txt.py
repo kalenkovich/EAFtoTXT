@@ -3,6 +3,8 @@ from xml.etree import ElementTree
 
 import pandas as pd
 
+from .db import add_annotations
+
 
 def _parse_annotation(annotation: ElementTree.Element, tier: ElementTree.Element):
     """
@@ -145,10 +147,11 @@ def _print_summary(annotations_df: pd.DataFrame) -> None:
         print(f'Participant {max_participant} had the highest total {statistic}: {max_value}')
 
 
-def convert_eaf_to_txt(eaf_path: (str, Path), order=True, summary=False) -> Path:
+def convert_eaf_to_txt(eaf_path: (str, Path), order=True, summary=False, path_to_database: (str, Path) = None) -> Path:
     """
     Converts eaf file to a tab-delimited file with ".txt" extension and no column names.
     Columns extracted: 'tier_id', 'participant', 'start', 'end', 'duration', 'value'
+    :param path_to_database: if supplied, the annotations will be added to the database at this path
     :param summary: bool, should a short summary be printed out?
     :param order: order annotations chronolagically, list subtier annotations below the parent tier
     :param eaf_path: path to the EAF file
@@ -158,6 +161,11 @@ def convert_eaf_to_txt(eaf_path: (str, Path), order=True, summary=False) -> Path
 
     if summary:
         _print_summary(annotations_df)
+
+    if path_to_database:
+        add_annotations(path_to_database=path_to_database,
+                        eaf_filename=eaf_path.name,
+                        annotations_df=annotations_df)
 
     output_path = eaf_path.with_suffix('.txt')
     annotations_df.to_csv(output_path,
